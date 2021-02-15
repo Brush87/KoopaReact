@@ -1,22 +1,58 @@
 version: '3'
+
 services:
-  app:
-    container_name: koopa
-    tty: true
-    build: .
-    command: npm run start
+  koopa-server:
+    build:
+      context: ./service
+      dockerfile: Dockerfile
+    image: koopa-server
+    container_name: koopa-node-server
+    command: # TODO Write command to start app
+    volumes:
+      - # TODO Add in volumes as nescessary
     ports:
-      - '3000:3000'
-    external_links:
-      - mongo
+      - "3005:3005"
     depends_on:
       - mongo
+    networks:
+      - koopa-network
+
   mongo:
     container_name: mongo
     image: mongo
+    volumes:
+      - # TODO Add in volumes as nescessary
     ports:
       - '27017:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: root-db
+    networks:
+      - koopa-network
+
+  koopa-client:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    image: koopa-client
+    container_name: koopa-react-client
+    tty: true
+    build: .
+    command: npm run start
+    volumes:
+      - # TODO Add in volumes as nescessary
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+      - koopa-server
+    networks:
+      - koopa-network
+
+networks:
+  koopa-network:
+    driver: bridge
+
+volumes:
+  - # TODO Add in matching volumes as specified above
