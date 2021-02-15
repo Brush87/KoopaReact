@@ -11,7 +11,7 @@ services:
     volumes:
       - # TODO Add in volumes as nescessary
     ports:
-      - "3005:3005"
+      - '3005:3005'
     depends_on:
       - mongo
     networks:

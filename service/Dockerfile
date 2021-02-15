@@ -12,7 +12,6 @@ RUN npm install --silent
 # Copy app source code
 COPY . .
 
-# Exports
 EXPOSE 3005
 
 CMD ["npm", "start"]
